@@ -1,0 +1,118 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Poll - <%=title %></title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+        .chart { float: left; width: 300px; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>    
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+window.onload = function() {
+    if (window.jQuery) {  
+        // jQuery is loaded  
+       //alert("Yeah!");
+      $(document).ready(function() {
+         //alert("Yeah!");     
+   $('.choice_input').change(function(){
+       //alert("Yeah!"); 
+    if( $(this).val() === '1'){
+        $('.form-group').append('<input name="choice_input" type="text" />');
+        $('.form-group').append('<button name="add_option" value="1" class="btn btn-warning btn-lg btnAdd">Add New Option</button>');
+    }
+});
+
+$(".btnAdd").click(function(){
+        var opt = $(".choice_input").val();
+        $("select").append('<option value="' + opt + '">' + opt +'</option>')
+    });
+    
+});
+    } else {
+        // jQuery is not loaded
+      //  alert("Doesn't Work");
+    }
+}
+</script>
+    
+    
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Poll', 'Votes'],
+          <% for(var i=0; i < poll.length; i++) { %>
+                    ['<%=poll[i]._id %>', <%=poll[i].count %>],
+            <% } %>
+        ]);
+
+        var options = {
+          chart: {
+            title: 'Poll',
+            subtitle: '<%=title %>',
+          },
+          bars: 'horizontal'
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+</head>
+<body>
+
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa"></span> My Poll - <%=title %> - Aggregate Results Page</h1>
+    </div>
+
+    <div class="row">
+
+        <!-- INFORMATION -->
+        <div class="col-sm-12">
+            <div class="well">
+            <%if (user != 0) { %>
+        <a href="/" class="btn btn-default"><span class="fa fa-user"></span> Home</a>
+        <a href="/profile" class="btn btn-default"><span class="fa fa-user"></span> My Account</a>          
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>   
+        
+<% } else {%>
+        <a href="/" class="btn btn-default"><span class="fa fa-user"></span> Home</a>       
+        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>        
+<% } %>
+<p>
+                        <B> POLL: </B>
+                    </p>
+<%if (error =="") { %>
+
+<% }else{ %>
+<li><b style="color: red;"><%=error %></b></li>
+<% } %>
+</ul>
+
+
+<%if (poll.length >0 ) { %>
+<div id="barchart_material" style="width: 450px; height: 250px;"></div>
+<% }else{ %>
+<div><b style="color: red;">Sorry No Data Available.</b></div>
+<% } %>
+
+
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!-- views/pages/polls.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Polls</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+    <div>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa"></span> Poll's Page</h1>
+    </div>
+
+    <div class="row">
+
+        <!-- POLL INFORMATION -->
+        <div class="col-sm-12">
+            <div class="well">
+            <%if (user != 0) { %>
+        <a href="/" class="btn btn-default"><span class="fa fa-user"></span> Home</a>
+        <a href="/profile" class="btn btn-default"><span class="fa fa-user"></span> My Account</a>  
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>        
+
+<% } else {%>
+        <a href="/" class="btn btn-default"><span class="fa fa-user"></span> Home</a>       
+        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>        
+<% } %>
+
+                <h3><span class="fa"></span>Polls</h3>
+
+<h2>Polls Listing:</h2>
+<ul>
+<% for(var i=0; i<poll.length; i++) {%>
+  <a href="pollView/<%= poll[i].url %>">
+       <button class="btn .btn-md btn-block btn-default"><b>View</b> <%= poll[i].title %> <b>Poll</b></button>
+   </a>
+   <br />
+<% 
+}
+%>
+</ul>
+<%if (error =="") { %>
+
+<% }else{ %>
+<li><b style="color: red;"><%=error %></b></li>
+<% } %>
+</ul>
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+</body>
+</html>

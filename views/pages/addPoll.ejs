@@ -1,0 +1,73 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Vote App Add New Poll</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body        { padding-top:80px; }
+    </style>
+<script src="https://code.jquery.com/jquery-3.0.0.min.js">
+</script>   
+<script>
+window.onload = function() {
+    if (window.jQuery) {  
+        // jQuery is loaded  
+      //  alert("Yeah!");
+      $(document).ready(function() {
+     var max_fields      = 10; //maximum input boxes allowed
+     var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+     var add_button      = $(".add_field_button"); //Add button ID
+     
+     var x = 1; //initlal text box count
+     $(add_button).click(function(e){ //on add input button click
+         e.preventDefault();
+         if(x < max_fields){ //max input box allowed
+             x++; //text box increment
+             $(wrapper).append('<div><input type="text" size="50" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
+         }
+     });
+     
+     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+         e.preventDefault(); 
+         $(this).parent('div').remove(); 
+         x--;
+     })
+});
+    } else {
+        // jQuery is not loaded
+      //  alert("Doesn't Work");
+    }
+}
+</script>   
+</head>
+<body>
+<div class="container">
+
+<div class="col-sm-6 col-sm-offset-3">
+        <a href="/" class="btn btn-default"><span class="fa fa-user"></span> Home</a>
+        <a href="/profile" class="btn btn-default"><span class="fa fa-user"></span> My Account</a>          
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>   
+    <h1><span class="fa"></span> Add New Poll</h1>
+
+    <!-- POLL FORM -->
+    <form action="/addNewPoll" method="post" name="addpoll">
+        <div class="form-group">
+            <label>Name Your Poll Title</label>
+            <input type="text" size="50" class="form-control" name="ptitle">
+        </div>
+    <div class="input_fields_wrap">
+<label>Choice</label>
+         <div><input type="text" size="50" name="mytext[]"></div>
+                 
+    </div> 
+        <button class="add_field_button btn btn-warning btn-lg">Add More Fields</button> 
+        <button type="submit" class="btn btn-warning btn-lg">Add Poll</button>
+    </form>
+
+</div>
+
+</div>
+</body>
+</html>

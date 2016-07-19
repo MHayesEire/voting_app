@@ -1,0 +1,26 @@
+{
+  "name": "BuildAVotingApp",
+  "version": "0.0.6",
+  "description": "Build a Voting App",
+  "main": "server.js",
+  "repository": "https://github.com/MHayesEire/voting_app.git",
+  "author": "Martin Hayes",
+  "dependencies": {
+    "bcrypt": "~0.8.7",
+    "body-parser": "~1.0.0",
+    "cookie-parser": "~1.0.0",
+    "ejs": "~2.4.2",
+    "email-validator": "^1.0.4",
+    "express": "~4.0.0",
+    "express-session": "~1.0.0",
+    "method-override": "~1.0.0",
+    "mongodb": "2.1.4",
+    "morgan": "~1.0.0",
+    "request": "^2.73.0",
+    "shortid": "^2.2.6"
+  },
+  "engines": {
+    "node": "4.4.5",
+    "npm": "2.15.5"
+  }
+}

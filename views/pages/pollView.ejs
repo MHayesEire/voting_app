@@ -1,0 +1,151 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Poll - <%=poll.title %></title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+        .chart      { float: left; width: 300px; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>    
+<script language="JavaScript" type="text/javascript" src="/javascripts/main.js"></script>
+<script>
+window.onload = function() {
+    if (window.jQuery) {  
+        // jQuery is loaded  
+       //alert("Yeah!");
+      $(document).ready(function() {
+         //alert("Yeah!");     
+   $('.choice_input').change(function(){
+       //alert("Yeah!"); 
+    if( $(this).val() === '1'){
+        $('.form-group').append('<input name="choice_input" size="50" type="text" />');
+        $('.form-group').append('<button name="add_option" type="submit" value="1" class="btn btn-info btn-lg btnAdd">Add New Option</button>');
+    }
+});
+
+$(".btnAdd").click(function(){
+        var opt = $(".choice_input").val();
+        $("select").append('<option value="' + opt + '">' + opt +'</option>')
+    });
+    
+});
+    } else {
+        // jQuery is not loaded
+      //  alert("Doesn't Work");
+    }
+}
+
+</script>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa"></span> Poll Page</h1>
+    </div>
+
+    <div class="row">
+
+        <!-- POLL INFORMATION -->
+        <div class="col-sm-12">
+            <div class="well">
+            <%if (user != 0) { %>
+        <a href="/" class="btn btn-default"><span class="fa fa-user"></span> Home</a>
+        <a href="/profile" class="btn btn-default"><span class="fa fa-user"></span> My Account</a>          
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>   
+        <br /><br />
+        <a target="_blank" href="https://twitter.com/intent/tweet?<%= twurl %>&text=Poll for <%= poll.title %> @ <%= twurl %>&original_referer=<%= twurl %>&hashtags=FCC,Poll App"> 
+    <button class="btn .btn-md btn-block btn-info"><b>Share On Twitter</b></button>
+   </a>
+        
+<% } else {%>
+        <a href="/" class="btn btn-default"><span class="fa fa-user"></span> Home</a>       
+        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>        
+<% } %>
+<h2>POLL: <%= poll.title %></h2>
+<form name="form" action="/addVote" method="post" id="form1" enctype="application/x-www-form-urlencoded">
+        <div class="form-group">
+<select name="option" class="choice_input">
+    <option value="0" selected>Please Choose One:</option>
+    <option value="1">Add Custom Option</option>    
+        <% poll.options.forEach(function(choice) { %>
+        <option value="<%= choice %>"><%= choice %></option>
+    <% }); %>
+</select>       
+            </div> 
+<input type="hidden" name="url" value="<%= poll.url %>">
+<input type="hidden" name="title" value="<%= poll.title %>">
+<input type="hidden" name="options" value="<%= poll.options %>">
+     <!-- send to process form -->
+        <button type="submit" name="add_vote" value="1" class="btn btn-warning btn-lg" onclick="return validateForm();" >Add Vote</button>
+    </form>
+<%if (error =="") { %>
+
+<% }else{ %>
+<li><b style="color: red;"><%=error %></b></li>
+<% } %>
+</ul>
+    <div class="chart">
+<canvas id="myChart" width="100" height="100"></canvas>
+</div>
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+<script>
+    var countries = <%- JSON.stringify(poll.options) %>;
+    console.log ("dd : " + countries);
+    var temp;
+    temp = countries;
+console.log ("dd : " + temp);
+    
+console.log ( temp);
+
+var mytemp = JSON.parse(countries);
+
+var ctx = $("#myChart");
+
+ var palette = ['#CDA7C6','#7C7D9A','#8FBCCC'];
+		var chartData = {
+			labels: [],
+			datasets: []
+		};
+
+		for(var country in data){
+			var hours = data[country];
+			var counts = Object.keys(hours).map(function(x){return hours[x];});
+			var color = palette.pop();
+
+			var dataset = {
+				label: country,
+				data: counts,
+				pointColor: color,
+		        strokeColor: color,
+		        pointStrokeColor: '#fff',
+		        fillColor: "transparent",
+			};
+
+			if(chartData.labels.length < Object.keys(hours).length){
+				chartData.labels = Object.keys(hours);
+			}
+
+			chartData.datasets.push(dataset);
+		}
+
+
+var myPieChart = new Chart(ctx,{
+    type: 'pie',
+    data: chartData
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!-- views/pages/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Your Profile</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+        
+    <div class="page-header text-center">
+        <h1><span class="glyphicon glyphicon-user"></span> Profile Page</h1>
+    </div>
+        <div class="col-sm-12">
+            <div class="well">
+                <h3><span class="glyphicon glyphicon-user"></span>View Your Polls</h3>
+        <a href="/" class="btn btn-default"><span class="fa fa-user"></span> Home</a>
+        <a href="/polls" class="btn btn-default"> View All Polls</a>
+        <a href="/logout" class="btn btn-default btn-sm"><span class="fa fa-user"></span> Logout</a>  
+        <br /> <br />
+<form action="/viewAllMyPolls" method="post">
+        <button type="submit" class="btn btn-warning btn-lg btn-block"><span class="glyphicon glyphicon-user"></span> List Your Polls</button>
+    </form>
+    <br />
+<form action="/addPoll" method="post">
+        <button type="submit" class="btn btn-warning btn-lg btn-block"><span class="glyphicon glyphicon-user"></span> Add New Poll</button>
+    </form>    
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+</body>
+</html>

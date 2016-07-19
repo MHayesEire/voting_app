@@ -1,0 +1,154 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Poll - <%=poll.title %></title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+        .chart { float: left; width: 300px; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>    
+
+<script>
+window.onload = function() {
+    if (window.jQuery) {  
+        // jQuery is loaded  
+       //alert("Yeah!");
+      $(document).ready(function() {
+         //alert("Yeah!");     
+   $('.choice_input').change(function(){
+       //alert("Yeah!"); 
+    if( $(this).val() === '1'){
+        $('.form-group').append('<input name="choice_input" type="text" />');
+        $('.form-group').append('<button name="add_option" value="1" class="btn btn-warning btn-lg btnAdd">Add New Option</button>');
+    }
+});
+
+$(".btnAdd").click(function(){
+        var opt = $(".choice_input").val();
+        $("select").append('<option value="' + opt + '">' + opt +'</option>')
+    });
+    
+});
+    } else {
+        // jQuery is not loaded
+      //  alert("Doesn't Work");
+    }
+}
+</script>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa"></span> My Poll Page</h1>
+    </div>
+
+    <div class="row">
+
+        <!-- INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+        <a href="/" class="btn btn-default"><span class="fa fa-user"></span> Home</a>       
+        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>        
+                <h3><span class="fa"></span>View All Polls</h3>
+
+                    <p>
+                        <B> POLLS: </B>
+                    </p>
+<h2>Data: <%= poll %></h2>
+<form action="/addVote" method="post">
+        <div class="form-group">
+<select name="option" class="choice_input">
+    <option value="0" selected>Please Choose One:</option>
+    <option value="1">Add Custom Option</option>    
+        <% poll.options.forEach(function(choice) { %>
+        <option value="<%= choice %>"><%= choice %></option>
+    <% }); %>
+</select>       
+    </div> 
+<input type="hidden" name="url" value="<%= poll.url %>">
+<input type="hidden" name="title" value="<%= poll.title %>">
+
+     <!-- send to process form -->
+        <button type="submit" name="add_vote" value="1" class="btn btn-warning btn-lg">Add Vote</button>
+    </form>
+<ul>
+  <pre> <%- JSON.stringify(poll) %> </pre>
+</ul>
+
+<ul>
+  <pre> <%- JSON.stringify(twurl) %> </pre>
+</ul>
+ <a class="btn btn-info btn-lg" target="_blank"
+        href=" http://twitter.com/share?text=<%=poll.title %>&url=<%=twurl %>&hashtags=FCC Vote App">
+            Share on Twitter</a>
+<%if (error =="") { %>
+
+<% }else{ %>
+<li><b style="color: red;"><%=error %></b></li>
+<% } %>
+</ul>
+    <div class="chart">
+<canvas id="myChart" width="100" height="100"></canvas>
+</div>
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+<script>
+    var countries = <%- JSON.stringify(poll.options) %>;
+    console.log ("dd : " + countries);
+    var temp;
+    temp = countries;
+console.log ("dd : " + temp);
+    
+console.log ( temp);
+
+var mytemp = JSON.parse(countries);
+
+var ctx = $("#myChart");
+
+ var palette = ['#CDA7C6','#7C7D9A','#8FBCCC'];
+		var chartData = {
+			labels: [],
+			datasets: []
+		};
+
+		for(var country in data){
+			var hours = data[country];
+			var counts = Object.keys(hours).map(function(x){return hours[x];});
+			var color = palette.pop();
+
+			var dataset = {
+				label: country,
+				data: counts,
+				pointColor: color,
+		        strokeColor: color,
+		        pointStrokeColor: '#fff',
+		        fillColor: "transparent",
+			};
+
+			if(chartData.labels.length < Object.keys(hours).length){
+				chartData.labels = Object.keys(hours);
+			}
+
+			chartData.datasets.push(dataset);
+		}
+
+
+var myPieChart = new Chart(ctx,{
+    type: 'pie',
+    data: chartData
+});
+
+</script>
+</body>
+</html>

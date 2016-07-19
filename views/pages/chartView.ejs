@@ -1,0 +1,110 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Poll -  <%=test[0] %></title> 
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+        .chart { float: left; width: 300px; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.bundle.min.js"></script>    
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script>
+window.onload = function() {
+    if (window.jQuery) {  
+        // jQuery is loaded  
+       //alert("Yeah!");
+      $(document).ready(function() {
+         //alert("Yeah!");     
+   $('.choice_input').change(function(){
+       //alert("Yeah!"); 
+    if( $(this).val() === '1'){
+        $('.form-group').append('<input name="choice_input" type="text" />');
+        $('.form-group').append('<button name="add_option" value="1" class="btn btn-warning btn-lg btnAdd">Add New Option</button>');
+    }
+});
+
+$(".btnAdd").click(function(){
+        var opt = $(".choice_input").val();
+        $("select").append('<option value="' + opt + '">' + opt +'</option>')
+    });
+    
+});
+    } else {
+        // jQuery is not loaded
+      //  alert("Doesn't Work");
+    }
+}
+</script>
+
+<script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        var data = new google.visualization.DataTable();
+              data.addColumn('string', 'Votes');
+              data.addColumn('number', 'Total');
+              data.addRows([
+                  <% for(var i=0; i < test[1].length; i++) { %>
+                    ['<%=test[1][i] %>', <%=test[2][i] %>],
+            <% } %>
+              ]);
+
+        var options = {
+          title: '<%=test[0] %>'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+
+</head>
+<body>
+
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa"></span> Poll Result Page</h1>
+    </div>
+
+    <div class="row">
+
+        <!-- POLL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+            <%if (user != 0) { %>
+        <a href="/" class="btn btn-default"><span class="fa fa-user"></span> Home</a>
+        <a href="/profile" class="btn btn-default"><span class="fa fa-user"></span> My Account</a>          
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>   
+        
+<% } else {%>
+        <a href="/" class="btn btn-default"><span class="fa fa-user"></span> Home</a>       
+        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>        
+<% } %>
+<%if (error =="") { %>
+
+<% }else{ %>
+<li><b style="color: red;"><%=error %></b></li>
+<% } %>
+</ul>
+</div>
+</div>
+
+</div>
+<B>POLL CHART: </B>
+</div>
+
+    <div class="chart">
+<div id="piechart" style="width: 900px; height: 500px;"></div>
+</div>
+</body>
+</html>
